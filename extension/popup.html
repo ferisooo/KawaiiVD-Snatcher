@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="scanline"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+        <polygon points="16,2 30,10 30,22 16,30 2,22 2,10" fill="none" stroke="#b400ff" stroke-width="1.5" />
+        <polygon points="16,8 24,12 24,20 16,24 8,20 8,12" fill="#b400ff22" stroke="#00f5ff" stroke-width="1" />
+        <circle cx="16" cy="16" r="3" fill="#00f5ff" />
+      </svg>
+      <h1>CYBERSNATCHER</h1>
+    </div>
+    <span id="platform" class="platform"></span>
+  </header>
+
+  <section class="manual">
+    <label>▸ DIRECT URL</label>
+    <div class="manual-row">
+      <input id="manualUrl" type="text" placeholder="https://...mp4" spellcheck="false" />
+      <button id="manualBtn" title="Download">SNATCH</button>
+    </div>
+    <label class="saveas">
+      <input type="checkbox" id="saveAs" /> Ask where to save
+    </label>
+  </section>
+
+  <section class="detected">
+    <div class="detected-head">
+      <span>▸ DETECTED MEDIA <span id="count" class="count">0</span></span>
+      <div class="head-actions">
+        <button id="refreshBtn" title="Re-scan page">⟳</button>
+        <button id="clearBtn" title="Clear list">CLEAR</button>
+      </div>
+    </div>
+    <div id="jobs" class="jobs"></div>
+    <div id="list" class="list">
+      <div id="empty" class="empty">No media detected yet.<br />Play a video or reload the page.</div>
+    </div>
+  </section>
+
+  <footer>POWERED BY chrome.downloads · PURE EXTENSION</footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
