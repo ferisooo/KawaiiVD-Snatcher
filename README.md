@@ -134,5 +134,17 @@ Here's exactly what to check and what to look for:
 
 ---
 
+## 📜 Terms & Privacy
+
+- **[Terms of Use](TERMS.md)** — you're free to use, fork, and modify
+  CyberSnatcher (even commercially) **as long as you credit Feris's idea and
+  Claude's work**. Includes the warranty disclaimer and your responsibility to
+  download only what's lawful for you.
+- **[Privacy Policy](PRIVACY.md)** — in one line: **CyberSnatcher runs entirely
+  on your device, collects nothing, and sends nothing to anyone.** Feris does
+  not collect any information from people using the tool.
+
+---
+
 *For developers: a deeper technical breakdown lives in
 [`extension/README.md`](extension/README.md).*
