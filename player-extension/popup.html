@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="scanline"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+        <polygon points="16,2 30,10 30,22 16,30 2,22 2,10" fill="none" stroke="#b400ff" stroke-width="1.5" />
+        <polygon points="16,8 24,12 24,20 16,24 8,20 8,12" fill="#b400ff22" stroke="#00f5ff" stroke-width="1" />
+        <polygon points="14,13 21,16 14,19" fill="#00f5ff" />
+      </svg>
+      <h1>CYBERPLAYER</h1>
+    </div>
+    <span id="platform" class="platform"></span>
+  </header>
+
+  <!-- Inline mini-player, revealed when a video is played -->
+  <section id="player" class="player hidden">
+    <div class="player-top">
+      <div id="playerTitle" class="player-title">—</div>
+      <div class="player-actions">
+        <button id="popoutBtn" title="Open in a full tab">⛶</button>
+        <button id="closePlayer" title="Close player">✕</button>
+      </div>
+    </div>
+    <div class="video-wrap">
+      <video id="video" controls playsinline></video>
+      <div id="playerStatus" class="player-status hidden"></div>
+    </div>
+  </section>
+
+  <section class="manual">
+    <label>▸ PLAY A URL</label>
+    <div class="manual-row">
+      <input id="manualUrl" type="text" placeholder="https://...mp4 or ...m3u8" spellcheck="false" />
+      <button id="manualBtn" title="Play">PLAY</button>
+    </div>
+  </section>
+
+  <section class="detected">
+    <div class="detected-head">
+      <span>▸ DETECTED VIDEOS <span id="count" class="count">0</span></span>
+      <div class="head-actions">
+        <button id="refreshBtn" title="Re-scan page">⟳</button>
+        <button id="clearBtn" title="Clear list">CLEAR</button>
+      </div>
+    </div>
+    <div id="list" class="list">
+      <div id="empty" class="empty">No videos detected yet.<br />Play a video or reload the page.</div>
+    </div>
+  </section>
+
+  <footer>DETECT · PLAY · NO DOWNLOADS</footer>
+
+  <script src="vendor/hls.min.js"></script>
+  <script src="player-core.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

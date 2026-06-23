@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CyberPlayer</title>
+  <link rel="stylesheet" href="player.css" />
+</head>
+<body>
+  <div class="scanline"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+        <polygon points="16,2 30,10 30,22 16,30 2,22 2,10" fill="none" stroke="#b400ff" stroke-width="1.5" />
+        <polygon points="16,8 24,12 24,20 16,24 8,20 8,12" fill="#b400ff22" stroke="#00f5ff" stroke-width="1" />
+        <polygon points="14,13 21,16 14,19" fill="#00f5ff" />
+      </svg>
+      <h1>CYBERPLAYER</h1>
+    </div>
+    <div id="title" class="title">—</div>
+  </header>
+
+  <main class="stage">
+    <div class="video-wrap">
+      <video id="video" controls autoplay playsinline></video>
+      <div id="status" class="status hidden"></div>
+    </div>
+    <div id="meta" class="meta"></div>
+  </main>
+
+  <script src="vendor/hls.min.js"></script>
+  <script src="player-core.js"></script>
+  <script src="player.js"></script>
+</body>
+</html>
