@@ -1,9 +1,9 @@
 # CyberSnatcher — Chrome Extension
 
 A pure Manifest V3 Chrome extension that sniffs media on the current tab and
-downloads the direct files in one click. This is a browser-native port of the
-CyberSnatcher desktop app's **downloader** — re-themed in the same cyberpunk
-style, with no external binaries required.
+either **plays it in-extension** or **downloads** the direct files in one click.
+This is a browser-native port of the CyberSnatcher desktop app's **downloader**
+— re-themed in the same cyberpunk style, with no external binaries required.
 
 ## How it works
 
@@ -21,6 +21,12 @@ style, with no external binaries required.
   resolution, and flag **DRM up front** — instead of listing five playlists
   for one video and failing after you click. Items that can't be downloaded
   (DRM, DASH, blob URLs) live in a collapsed **NOT DOWNLOADABLE** section.
+- **Every playable entry gets a ▶ PLAY button** that plays the video *inside the
+  extension* — in a mini-player in the popup, or popped out to a full tab
+  (`player.html`). Direct files play natively; **HLS (`.m3u8`, incl. AES-128)**
+  plays via a bundled [hls.js](https://github.com/video-dev/hls.js)
+  (`vendor/hls.min.js`). No download needed, nothing written to disk. DRM, DASH
+  and `blob:` items remain unplayable and stay in the NOT DOWNLOADABLE section.
 - **Direct files** get a one-click **GET** button (saved via `chrome.downloads`).
 - **HLS streams** (`.m3u8`) get a **MERGE** button. An offscreen document
   fetches the playlist, downloads every segment, decrypts **AES-128** if the
@@ -45,6 +51,8 @@ Because it's a **pure extension** (no native helper, unlike the Tauri desktop
 app), it is limited to what the browser sandbox allows:
 
 - ✅ Detect and download **direct files** (`.mp4`, `.webm`, `.m4a`, `.mp3`, …)
+- ✅ **Play detected media in-extension** — direct files natively, HLS via
+  hls.js — in a popup mini-player or a full tab, without downloading anything
 - ✅ **Full HLS download & merge** — clear *and* **AES-128**-encrypted streams
   (TS or fMP4), assembled into one playable file in-browser. Covers the
   `blob:`/MSE players on most streaming, news, and social sites.
@@ -79,5 +87,8 @@ app), it is limited to what the browser sandbox allows:
 | `manifest.json` | MV3 manifest, permissions, action popup |
 | `background.js` | Service worker: network sniffing, per-tab state, job orchestration |
 | `offscreen.html/.js` | HLS engine: playlist parse, segment fetch, AES-128 decrypt, merge |
-| `popup.html/.css/.js` | Cyberpunk popup UI, DOM scan, download + merge logic |
+| `popup.html/.css/.js` | Cyberpunk popup UI, DOM scan, play + download + merge logic |
+| `player.html/.css/.js` | Full-tab in-extension player page |
+| `player-core.js` | Shared playback engine (hls.js for HLS, native otherwise) |
+| `vendor/hls.min.js` | Bundled hls.js for HLS playback |
 | `icons/` | Toolbar / store icons |

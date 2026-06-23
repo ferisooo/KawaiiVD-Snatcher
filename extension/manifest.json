@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "CyberSnatcher — Media Snatcher",
-  "version": "1.2.0",
-  "description": "Cyberpunk media snatcher: detects videos on any page and downloads them — direct files plus full HLS stream merging (clear & AES-128). Filters out ads and stream fragments. No DRM.",
+  "version": "1.3.0",
+  "description": "Cyberpunk media snatcher: detects videos on any page (not ads) and lets you play them in-extension or download them — direct files plus full HLS stream merging (clear & AES-128). Filters out ads and stream fragments. No DRM.",
   "permissions": [
     "downloads",
     "webRequest",

@@ -21,6 +21,7 @@ const PLATFORMS = [
 let activeTab = null;
 let lastItems = [];
 let showUnavailable = false;
+let currentPlayer = null; // active attachPlayer controller (in-extension playback)
 
 // ── helpers ──
 function stripUrl(url) {
@@ -324,6 +325,62 @@ function snatchStream(url, baseName, btn) {
   });
 }
 
+// ── In-extension playback ─────────────────────────────────────────────────────
+function titleFor(m) {
+  const title = activeTab && activeTab.title ? activeTab.title.trim() : "";
+  if (title) return title;
+  return m.filename || "video";
+}
+
+function showStatus(stage, message) {
+  const el = document.getElementById("playerStatus");
+  if (stage === "ready" || stage === "playing") {
+    el.classList.add("hidden");
+    el.textContent = "";
+  } else {
+    el.classList.remove("hidden");
+    el.textContent = message || (stage === "loading" ? "Loading…" : "");
+    el.classList.toggle("err", stage === "error");
+  }
+}
+
+function playInline(m) {
+  const section = document.getElementById("player");
+  const video = document.getElementById("video");
+  const title = document.getElementById("playerTitle");
+
+  if (currentPlayer) { currentPlayer.destroy(); currentPlayer = null; }
+  video.pause();
+
+  section.classList.remove("hidden");
+  title.textContent = titleFor(m);
+  title.title = m.url;
+  const ext = m.ext || extOf(m.url) || "mp4";
+  const kind = m.kind || kindFor(ext);
+  // Remember the active item so the pop-out button knows what to open.
+  section.dataset.url = m.url;
+  section.dataset.ext = ext;
+  section.dataset.kind = kind;
+
+  currentPlayer = attachPlayer(video, { url: m.url, ext, kind }, showStatus);
+  section.scrollIntoView({ block: "nearest" });
+}
+
+function closeInline() {
+  const section = document.getElementById("player");
+  const video = document.getElementById("video");
+  if (currentPlayer) { currentPlayer.destroy(); currentPlayer = null; }
+  video.pause();
+  section.classList.add("hidden");
+}
+
+function openInTab(m) {
+  const ext = (m && m.ext) || extOf(m.url) || "mp4";
+  const kind = (m && m.kind) || kindFor(ext);
+  const params = new URLSearchParams({ u: m.url, ext, kind, name: titleFor(m) });
+  chrome.tabs.create({ url: chrome.runtime.getURL("player.html") + "?" + params.toString() });
+}
+
 // ── Active merge jobs ──
 const jobsMap = new Map();
 
@@ -414,6 +471,16 @@ function rowFor(e, unavail) {
   info.appendChild(name);
   info.appendChild(meta);
   row.appendChild(info);
+
+  if (!unavail) {
+    // Playable in-extension: hls.js handles HLS, native handles direct files.
+    const play = document.createElement("button");
+    play.className = "play-btn";
+    play.textContent = "▶";
+    play.title = "Play in the extension";
+    play.addEventListener("click", () => playInline(m));
+    row.appendChild(play);
+  }
 
   const btn = document.createElement("button");
   btn.className = "dl-btn";
@@ -518,6 +585,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     await chrome.runtime.sendMessage({ type: "clearMedia", tabId: activeTab.id }).catch(() => {});
     lastItems = [];
     render([]);
+  });
+
+  document.getElementById("closePlayer").addEventListener("click", closeInline);
+  document.getElementById("popoutBtn").addEventListener("click", () => {
+    const section = document.getElementById("player");
+    if (!section.dataset.url) return;
+    openInTab({ url: section.dataset.url, ext: section.dataset.ext, kind: section.dataset.kind });
   });
 
   // Live progress from in-flight merge jobs.

@@ -13,6 +13,10 @@ your browser.
 - **🩻 X-ray vision for media.** It quietly watches the page and lists every
   real video and audio file playing on it — even ones with no visible download
   button.
+- **▶️ Play it right here — no download needed.** Just want to *watch*? Hit
+  **▶** to play any detected video inside the popup, or **⛶** to pop it out to a
+  full browser tab. Direct files and HLS streams (including AES-128) both play,
+  powered by a bundled copy of the well-known **hls.js** library.
 - **🧬 Downloads "unsaveable" streaming video.** Most sites chop a video into
   hundreds of tiny pieces (HLS streams) so you *can't* just right-click → save.
   CyberSnatcher grabs all the pieces, **decrypts AES-128 protected ones**, and
@@ -77,7 +81,7 @@ You don't need to understand any code. Just follow these steps once:
 
 **That's it.** Go to any page with a video, click the CyberSnatcher icon, and
 your media will appear. Click **GET** (direct files) or **MERGE** (streams) to
-download.
+download — or hit **▶** to play it right inside the extension.
 
 > 💡 If a video doesn't show up right away, press **play** on it or hit the
 > **⟳ refresh** button in the popup — that's normal, the tool detects media as
@@ -88,10 +92,15 @@ download.
 ## 🛡️ Worried about viruses? Read these files yourself.
 
 Totally fair — you should never trust a downloader blindly. The good news:
-**this extension is small, 100% readable, and hides nothing.** There's no
-installer, no compiled program, and no minified/obfuscated code. It's just a
-handful of plain text files you (or any tech friend) can open in Notepad and
-read.
+**all of CyberSnatcher's own code is small, 100% readable, and hides nothing.**
+There's no installer and no compiled program. It's just a handful of plain text
+files you (or any tech friend) can open in Notepad and read.
+
+The **one** exception is `extension/vendor/hls.min.js` — that's a bundled,
+minified copy of **[hls.js](https://github.com/video-dev/hls.js)**, the
+industry-standard open-source library used to play HLS streams in the browser.
+It's minified because that's how it ships; you can verify it against the public
+source or swap in your own copy.
 
 Here's exactly what to check and what to look for:
 
@@ -101,6 +110,7 @@ Here's exactly what to check and what to look for:
 | **`extension/background.js`** | Watches the page for media and filters out ads. **Look for:** there are **no servers it reports to** — it only reads what your page already loaded. |
 | **`extension/popup.js`** | The button panel you click. Handles detecting and downloading. |
 | **`extension/offscreen.js`** | The engine that downloads stream pieces and merges them. **Look for:** it `fetch`es **only the video's own URLs** — the same server the website already uses. |
+| **`extension/player-core.js`** | The in-extension player. **Look for:** it only points a `<video>` element (or hls.js) at the media URL — no new servers. |
 
 **The key safety facts, in plain English:**
 

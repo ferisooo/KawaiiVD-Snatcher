@@ -19,6 +19,21 @@
     <span id="platform" class="platform"></span>
   </header>
 
+  <!-- Inline mini-player, revealed when a video is played -->
+  <section id="player" class="player hidden">
+    <div class="player-top">
+      <div id="playerTitle" class="player-title">—</div>
+      <div class="player-actions">
+        <button id="popoutBtn" title="Open in a full tab">⛶</button>
+        <button id="closePlayer" title="Close player">✕</button>
+      </div>
+    </div>
+    <div class="video-wrap">
+      <video id="video" controls playsinline></video>
+      <div id="playerStatus" class="player-status hidden"></div>
+    </div>
+  </section>
+
   <section class="manual">
     <label>▸ DIRECT URL</label>
     <div class="manual-row">
@@ -44,8 +59,10 @@
     </div>
   </section>
 
-  <footer>POWERED BY chrome.downloads · PURE EXTENSION</footer>
+  <footer>SNATCH OR PLAY · PURE EXTENSION</footer>
 
+  <script src="vendor/hls.min.js"></script>
+  <script src="player-core.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>
